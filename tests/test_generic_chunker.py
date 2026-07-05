@@ -17,8 +17,8 @@ print(f"Total Chunks: {len(chunks)}")
 
 for chunk in chunks:
     print(
-        f"Chunk {chunk['chunk_id']} | "
-        f"Start: {chunk['start_char']} | "
-        f"End: {chunk['end_char']} | "
-        f"Length: {len(chunk['content'])}"
+        f"Chunk {chunk.chunk_id} | "
+        f"Start: {chunk.start_char} | "
+        f"End: {chunk.end_char} | "
+        f"Length: {len(chunk.content)}"
     )

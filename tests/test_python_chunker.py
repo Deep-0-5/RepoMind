@@ -25,7 +25,7 @@ chunks = chunker.chunk(code, metadata)
 
 for chunk in chunks:
     print("=" * 50)
-    print(chunk["type"])
-    print(chunk["name"])
-    print(chunk["start_line"], chunk["end_line"])
-    print(chunk["content"])
+    print(chunk.type)
+    print(chunk.name)
+    print(chunk.start_line, chunk.end_line)
+    print(chunk.content)

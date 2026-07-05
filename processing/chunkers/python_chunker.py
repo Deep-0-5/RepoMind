@@ -1,6 +1,6 @@
 from processing.chunkers.base_chunker import BaseChunker
 import ast
-
+from models.chunk import Chunk
 
 class PythonChunker(BaseChunker):
     """Chunks Python files using the AST."""
@@ -25,16 +25,16 @@ class PythonChunker(BaseChunker):
 
             source = ast.get_source_segment(text, node)
 
-            chunk = {
-                "chunk_id": chunk_id,
-                "type": chunk_type,
-                "name": node.name,
-                "content": source,
-                "path": metadata["path"],
-                "extension": metadata["extension"],
-                "start_line": node.lineno,
-                "end_line": node.end_lineno
-            }
+            chunk = Chunk(
+                chunk_id=chunk_id,
+                type=chunk_type,
+                name=node.name,
+                content=source,
+                path=metadata["path"],
+                extension=metadata["extension"],
+                start_line=node.lineno,
+                end_line=node.end_lineno
+            )
 
             chunks.append(chunk)
 
