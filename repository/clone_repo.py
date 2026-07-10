@@ -1,6 +1,10 @@
 from urllib.parse import urlparse
 from git import Repo, GitCommandError
 from pathlib import Path
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
+
 
 class RepositoryCloner:
     """Handles cloning GitHub repositories."""
@@ -23,8 +27,6 @@ class RepositoryCloner:
             return False
         
         return True
-        
-        
 
     def get_repo_name(self, url):
         parsed_url = urlparse(url)
@@ -43,14 +45,15 @@ class RepositoryCloner:
         destination = Path("data") / "repositories" / repo_name
 
         if destination.exists():
-            print("Repository already exists.")
+            logger.info("Repository already exists.")
             return True
 
         try:
+            logger.info(f"Cloning {url} to {destination}...")
             Repo.clone_from(url, destination)
-            print("Repository cloned successfully!")
+            logger.info("Repository cloned successfully!")
             return True
 
         except GitCommandError as e:
-            print(f"Git Error: {e}")
-            return False    
+            logger.error(f"Git Error cloning {url}: {e}")
+            return False

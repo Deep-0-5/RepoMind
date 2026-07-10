@@ -1,39 +1,40 @@
 # import ast
-
-# code = """
-# def login():
-#     print("Login")
-
-# class User:
-#     pass
-
-# def logout():
-#     print("Logout")
-# """
-
-# tree = ast.parse(code)
-
-# for node in tree.body:
-#     print(type(node).__name__, getattr(node, "name", None))
-
 import ast
 
-code = """
-def login():
-    print("Login")
+if __name__ == "__main__":
 
-class User:
-    pass
+    # code = """
+    # def login():
+    #     print("Login")
 
-def logout():
-    print("Logout")
-"""
+    # class User:
+    #     pass
 
-tree = ast.parse(code)
+    # def logout():
+    #     print("Logout")
+    # """
 
-for node in tree.body:
-    source = ast.get_source_segment(code, node)
+    # tree = ast.parse(code)
 
-    print("=" * 40)
-    print(type(node).__name__)
-    print(source)
+    # for node in tree.body:
+    #     print(type(node).__name__, getattr(node, "name", None))
+
+    code = """
+    def login():
+        print("Login")
+
+    class User:
+        pass
+
+    def logout():
+        print("Logout")
+    """
+
+    tree = ast.parse(code)
+
+    for node in tree.body:
+        source = ast.get_source_segment(code, node)
+
+        print("=" * 40)
+        print(type(node).__name__)
+        print(source)

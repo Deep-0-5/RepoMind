@@ -1,3 +1,18 @@
+EXTENSION_TO_LANGUAGE = {
+    ".py": "python",
+    ".js": "javascript",
+    ".ts": "typescript",
+    ".tsx": "tsx",
+    ".java": "java",
+    ".cpp": "cpp",
+    ".c": "c",
+    ".cs": "csharp",
+    ".go": "go",
+    ".rs": "rust",
+    ".md": "markdown",
+}
+
+
 class ContextBuilder:
     """
     Builds repository context from retrieved chunks.
@@ -19,7 +34,13 @@ class ContextBuilder:
 
             context += f"**Similarity Score:** {chunk['score']:.4f}\n\n"
 
-            context += "```python\n"
+            # Use the correct syntax highlighting based on file extension
+            language = EXTENSION_TO_LANGUAGE.get(
+                chunk.get("extension", ""),
+                ""
+            )
+
+            context += f"```{language}\n"
 
             context += chunk["content"]
 

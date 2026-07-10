@@ -1,0 +1,222 @@
+/* ===================================================================
+   RepoMind — Design System
+   Injected dynamically by ui/theme.py, which prepends a
+   variable block (light or dark) before this file's contents.
+=================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+code, pre, .stCodeBlock, [data-testid="stCodeBlock"] {
+    font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* ---------- App shell ---------- */
+
+[data-testid="stAppViewContainer"] {
+    background-color: var(--rm-bg) !important;
+    color: var(--rm-text) !important;
+}
+
+[data-testid="stHeader"] {
+    background-color: transparent !important;
+}
+
+[data-testid="stSidebar"] {
+    background-color: var(--rm-sidebar-bg) !important;
+    border-right: 1px solid var(--rm-border);
+}
+
+[data-testid="stSidebar"] * {
+    color: var(--rm-text) !important;
+}
+
+.block-container {
+    padding-top: 2rem !important;
+    max-width: 1100px;
+}
+
+/* ---------- Typography ---------- */
+
+h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+    color: var(--rm-text) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+}
+
+p, span, label, .stMarkdown, .stCaption {
+    color: var(--rm-text-secondary) !important;
+}
+
+hr, [data-testid="stDivider"] {
+    border-color: var(--rm-border) !important;
+}
+
+/* ---------- Buttons ---------- */
+
+.stButton > button {
+    background-color: var(--rm-surface) !important;
+    color: var(--rm-text) !important;
+    border: 1px solid var(--rm-border) !important;
+    border-radius: 10px !important;
+    font-weight: 500 !important;
+    transition: all 0.15s ease-in-out;
+    box-shadow: none !important;
+}
+
+.stButton > button:hover {
+    border-color: var(--rm-accent) !important;
+    color: var(--rm-accent) !important;
+}
+
+.stButton > button:disabled {
+    opacity: 0.45 !important;
+}
+
+/* Primary action buttons (Ask / Index / Clone) get the solid accent look */
+.rm-primary-btn .stButton > button {
+    background-color: var(--rm-accent) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.rm-primary-btn .stButton > button:hover {
+    background-color: var(--rm-accent-hover) !important;
+    color: #ffffff !important;
+}
+
+/* ---------- Inputs ---------- */
+
+.stTextInput input, .stTextArea textarea {
+    background-color: var(--rm-surface) !important;
+    color: var(--rm-text) !important;
+    border: 1px solid var(--rm-border) !important;
+    border-radius: 10px !important;
+}
+
+.stTextInput input:focus, .stTextArea textarea:focus {
+    border-color: var(--rm-accent) !important;
+    box-shadow: 0 0 0 1px var(--rm-accent) !important;
+}
+
+.stRadio label, .stRadio div {
+    color: var(--rm-text) !important;
+}
+
+/* ---------- Cards / info boxes ---------- */
+
+[data-testid="stAlert"] {
+    background-color: var(--rm-surface) !important;
+    border: 1px solid var(--rm-border) !important;
+    border-radius: 12px !important;
+    color: var(--rm-text) !important;
+}
+
+[data-testid="stMetric"] {
+    background-color: var(--rm-surface);
+    border: 1px solid var(--rm-border);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+}
+
+[data-testid="stMetricValue"] {
+    color: var(--rm-accent) !important;
+    font-weight: 700 !important;
+}
+
+/* ---------- Chat bubbles ---------- */
+
+[data-testid="stChatMessage"] {
+    background-color: var(--rm-surface) !important;
+    border: 1px solid var(--rm-border) !important;
+    border-radius: 14px !important;
+    padding: 0.5rem 0.25rem !important;
+    margin-bottom: 0.6rem !important;
+}
+
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
+    background-color: var(--rm-accent-soft) !important;
+    border-color: var(--rm-accent-soft) !important;
+}
+
+/* ---------- Sidebar chat history list ---------- */
+
+.rm-history-item .stButton > button {
+    text-align: left !important;
+    justify-content: flex-start !important;
+    background-color: transparent !important;
+    border: none !important;
+    font-size: 0.85rem !important;
+    padding: 0.4rem 0.6rem !important;
+}
+
+.rm-history-item .stButton > button:hover {
+    background-color: var(--rm-surface) !important;
+    color: var(--rm-accent) !important;
+}
+
+.rm-history-item-active .stButton > button {
+    background-color: var(--rm-accent-soft) !important;
+    color: var(--rm-accent) !important;
+    font-weight: 600 !important;
+}
+
+/* ---------- Header badge ---------- */
+
+.rm-badge {
+    display: inline-block;
+    background-color: var(--rm-accent-soft);
+    color: var(--rm-accent);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.rm-theme-toggle .stButton > button {
+    border-radius: 999px !important;
+    width: 2.4rem !important;
+}
+
+/* ---------- Bordered containers (chat window) ---------- */
+
+[data-testid="stVerticalBlockBorderWrapper"] {
+    border-color: var(--rm-border) !important;
+    border-radius: 14px !important;
+    background-color: var(--rm-surface) !important;
+}
+
+/* ---------- Pinned bottom chat input ---------- */
+
+[data-testid="stChatInput"] {
+    background-color: var(--rm-bg) !important;
+}
+
+[data-testid="stChatInput"] textarea {
+    background-color: var(--rm-surface) !important;
+    color: var(--rm-text) !important;
+    border-radius: 999px !important;
+    border: 1px solid var(--rm-border) !important;
+}
+
+[data-testid="stChatInput"] textarea:focus {
+    border-color: var(--rm-accent) !important;
+    box-shadow: 0 0 0 1px var(--rm-accent) !important;
+}
+
+[data-testid="stBottomBlockContainer"] {
+    background-color: var(--rm-bg) !important;
+    border-top: 1px solid var(--rm-border);
+}
+
+[data-testid="stChatInputSubmitButton"] {
+    background-color: var(--rm-accent) !important;
+    border-radius: 999px !important;
+}
+
+[data-testid="stChatInputSubmitButton"]:hover {
+    background-color: var(--rm-accent-hover) !important;
+}

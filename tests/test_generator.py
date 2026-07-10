@@ -2,16 +2,18 @@ from rag.retriever import Retriever
 from rag.context_builder import ContextBuilder
 from rag.generator import GeminiGenerator
 
-retriever = Retriever()
-builder = ContextBuilder()
-generator = GeminiGenerator()
+if __name__ == "__main__":
 
-question = "How does user login work?"
+    retriever = Retriever()
+    builder = ContextBuilder()
+    generator = GeminiGenerator()
 
-chunks = retriever.retrieve(question)
+    question = "How does user login work?"
 
-context = builder.build_context(chunks)
+    chunks = retriever.retrieve(question)
 
-answer = generator.generate(question, context)
+    context = builder.build_context(chunks)
 
-print(answer)
+    answer = generator.generate(question, context)
+
+    print(answer)

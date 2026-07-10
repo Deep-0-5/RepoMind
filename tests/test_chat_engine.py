@@ -1,12 +1,14 @@
 from rag.chat_engine import ChatEngine
 
-chat = ChatEngine()
+if __name__ == "__main__":
 
-question = input("Ask a question: ")
+    chat = ChatEngine()
 
-answer = chat.ask(question)
+    question = input("Ask a question: ")
 
-print("\n" + "=" * 60)
-print("Answer")
-print("=" * 60)
-print(answer)
+    answer = chat.ask(question)
+
+    print("\n" + "=" * 60)
+    print("Answer")
+    print("=" * 60)
+    print(answer)

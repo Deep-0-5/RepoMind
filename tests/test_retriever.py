@@ -1,21 +1,23 @@
 from rag.retriever import Retriever
 
-retriever = Retriever()
+if __name__ == "__main__":
 
-chunks = retriever.retrieve(
-    "How do users login?",
-    top_k=3
-)
+    retriever = Retriever()
 
-for chunk in chunks:
+    chunks = retriever.retrieve(
+        "How do users login?",
+        top_k=3
+    )
 
-    print("=" * 60)
+    for chunk in chunks:
 
-    print(f"Score : {chunk['score']:.4f}")
-    print(f"File  : {chunk['path']}")
-    print(f"Type  : {chunk['type']}")
-    print(f"Name  : {chunk['name']}")
+        print("=" * 60)
 
-    print()
+        print(f"Score : {chunk['score']:.4f}")
+        print(f"File  : {chunk['path']}")
+        print(f"Type  : {chunk['type']}")
+        print(f"Name  : {chunk['name']}")
 
-    print(chunk["content"][:300])
+        print()
+
+        print(chunk["content"][:300])

@@ -1,14 +1,10 @@
 from repository.parser import RepositoryParser
 from repository.file_reader import FileReader
-
 from processing.chunkers.chunk_manager import ChunkManager
-
 from embeddings.embedding_manager import EmbeddingManager
-
 from vector_db.vector_db_manager import VectorDBManager
-
 from utils.logger import setup_logger
-
+import time
 
 logger = setup_logger(__name__)
 
@@ -24,17 +20,29 @@ class RepositoryIndexer:
         self.vector_db = VectorDBManager().get_vector_db()
 
     def index_repository(self, repository_path):
+        """
+        Index a repository and return a stats dict with:
+        - files_scanned
+        - total_chunks
+        - new_chunks
+        - updated_chunks
+        - skipped_chunks
+        - deleted_chunks
+        """
 
         logger.info("Repository indexing started.")
+        total_start = time.perf_counter()
 
         # Parse repository
+        parse_start = time.perf_counter()
         files = self.parser.parse_repository(repository_path)
+        parse_time = time.perf_counter() - parse_start
 
         # Load already indexed chunk IDs
-        existing_ids = self.vector_db.get_all_ids()
+        existing_chunks = self.vector_db.get_existing_chunks()
 
         logger.info(
-            f"Loaded {len(existing_ids)} existing chunks."
+            f"Loaded {len(existing_chunks)} existing chunks."
         )
 
         logger.info(
@@ -42,6 +50,14 @@ class RepositoryIndexer:
         )
 
         total_chunks = 0
+        new_chunks = 0
+        updated_chunks = 0
+        skipped_chunks = 0
+        current_chunk_ids = set()
+        deleted_chunks = 0
+        chunking_time = 0
+        embedding_time = 0
+        database_time = 0
 
         for file in files:
 
@@ -53,83 +69,149 @@ class RepositoryIndexer:
             chunker = self.chunk_manager.get_chunker(
                 file["extension"]
             )
-
+            
+            chunk_start = time.perf_counter()
             chunks = chunker.chunk(content, file)
+            chunking_time += time.perf_counter() - chunk_start
 
             logger.info(
                 f"{file['path']} -> {len(chunks)} chunks"
             )
 
-            ids = []
-            embeddings = []
-            documents = []
-            metadatas = []
+            # Separate chunks into those that need embedding
+            # vs those that can be skipped
+            ids_to_store = []
+            contents_to_embed = []
+            metadatas_to_store = []
+            file_new = 0
+            file_updated = 0
 
             for chunk in chunks:
 
                 chunk_id = (
                     f"{file['path']}_chunk_{chunk.chunk_id}"
                 )
+                
+                current_chunk_ids.add(chunk_id)
 
-                # Skip already indexed chunks
-                if chunk_id in existing_ids:
+                stored_hash = existing_chunks.get(chunk_id)
 
-                    logger.info(
-                        f"Skipping {chunk_id} (already indexed)"
-                    )
+                # New chunk
+                if stored_hash is None:
+                    file_new += 1
 
+                # Unchanged chunk — skip
+                elif stored_hash == chunk.hash:
+                    skipped_chunks += 1
                     continue
 
-                try:
-
-                    embedding = self.embedder.embed_text(
-                        chunk.content
+                # Updated chunk — delete old, re-embed
+                else:
+                    self.vector_db.delete_documents(
+                        [chunk_id]
                     )
+                    file_updated += 1
 
-                except Exception as e:
-
-                    logger.error(
-                        f"Embedding failed for {chunk_id}: {e}"
-                    )
-
-                    continue
-
-                if embedding is None:
-                    continue
-
-                ids.append(chunk_id)
-
-                embeddings.append(embedding)
-
-                documents.append(chunk.content)
-
-                metadatas.append(
+                ids_to_store.append(chunk_id)
+                contents_to_embed.append(chunk.content)
+                metadatas_to_store.append(
                     chunk.to_metadata()
                 )
 
-            if ids:
-
-                self.vector_db.add_documents(
-                    ids=ids,
-                    embeddings=embeddings,
-                    documents=documents,
-                    metadatas=metadatas
-                )
-
-                total_chunks += len(ids)
-
-                logger.info(
-                    f"Stored {len(ids)} new chunks."
-                )
-
-            else:
-
+            if not ids_to_store:
                 logger.info(
                     "No new chunks to store."
                 )
+                continue
 
-        logger.info(
-            f"Repository indexing completed. Total new indexed chunks: {total_chunks}"
+            # Batch embed all chunks for this file at once
+            try:
+                embed_start = time.perf_counter()
+                embeddings = self.embedder.embed_batch(
+                    contents_to_embed
+                )
+                embedding_time += (
+                    time.perf_counter() - embed_start
+                )
+
+            except Exception as e:
+                logger.error(
+                    f"Batch embedding failed for {file['path']}: {e}"
+                )
+                continue
+
+            # Filter out any failed embeddings
+            valid_ids = []
+            valid_embeddings = []
+            valid_documents = []
+            valid_metadatas = []
+
+            for i, emb in enumerate(embeddings):
+                if emb:
+                    valid_ids.append(ids_to_store[i])
+                    valid_embeddings.append(emb)
+                    valid_documents.append(contents_to_embed[i])
+                    valid_metadatas.append(metadatas_to_store[i])
+
+            if valid_ids:
+
+                db_start = time.perf_counter()
+                self.vector_db.add_documents(
+                    ids=valid_ids,
+                    embeddings=valid_embeddings,
+                    documents=valid_documents,
+                    metadatas=valid_metadatas
+                )
+                database_time += (
+                    time.perf_counter() - db_start
+                )
+
+                total_chunks += len(valid_ids)
+                new_chunks += file_new
+                updated_chunks += file_updated
+
+                logger.info(
+                    f"Stored {len(valid_ids)} new/updated chunks."
+                )
+
+        db_start = time.perf_counter()
+        deleted_chunks = self.vector_db.delete_missing_chunks(
+            current_chunk_ids
         )
+        database_time += (
+            time.perf_counter() - db_start
+        )
+        
+        total_time = time.perf_counter() - total_start
+        logger.info("=" * 60)
+        logger.info("Repository Statistics")
+        logger.info("=" * 60)
 
-        return total_chunks
+        logger.info(f"Files Scanned     : {len(files)}")
+        logger.info(f"Indexed Chunks    : {total_chunks}")
+
+        logger.info("")
+
+        logger.info(f"New Chunks        : {new_chunks}")
+        logger.info(f"Updated Chunks    : {updated_chunks}")
+        logger.info(f"Skipped Chunks    : {skipped_chunks}")
+        logger.info(f"Deleted Chunks    : {deleted_chunks}")
+
+        logger.info("")
+
+        logger.info(f"Parse Time        : {parse_time:.2f} sec")
+        logger.info(f"Chunking Time     : {chunking_time:.2f} sec")
+        logger.info(f"Embedding Time    : {embedding_time:.2f} sec")
+        logger.info(f"Database Time     : {database_time:.2f} sec")
+        logger.info(f"Total Time        : {total_time:.2f} sec")
+
+        logger.info("=" * 60)
+
+        return {
+            "files_scanned": len(files),
+            "total_chunks": total_chunks,
+            "new_chunks": new_chunks,
+            "updated_chunks": updated_chunks,
+            "skipped_chunks": skipped_chunks,
+            "deleted_chunks": deleted_chunks,
+        }

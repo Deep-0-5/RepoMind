@@ -1,12 +1,14 @@
 from vector_db.chroma_db import ChromaDB
 
-db = ChromaDB()
+if __name__ == "__main__":
 
-results = db.collection.get()
+    db = ChromaDB()
 
-print(f"Total IDs: {len(results['ids'])}")
+    results = db.collection.get()
 
-print("\nFirst 20 IDs:\n")
+    print(f"Total IDs: {len(results['ids'])}")
 
-for doc_id in results["ids"][:20]:
-    print(doc_id)
+    print("\nFirst 20 IDs:\n")
+
+    for doc_id in results["ids"][:20]:
+        print(doc_id)

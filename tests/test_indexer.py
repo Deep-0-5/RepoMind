@@ -1,10 +1,12 @@
 from indexing.repository_indexer import RepositoryIndexer
 
-indexer = RepositoryIndexer()
+if __name__ == "__main__":
 
-total = indexer.index_repository(
-    "data/repositories/flask"
-)
+    indexer = RepositoryIndexer()
 
-print(f"\nRepository Indexed Successfully!")
-print(f"Total Chunks Indexed: {total}")
+    total = indexer.index_repository(
+        "data/repositories/flask"
+    )
+
+    print(f"\nRepository Indexed Successfully!")
+    print(f"Total Chunks Indexed: {total}")

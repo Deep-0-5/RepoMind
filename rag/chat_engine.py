@@ -16,13 +16,23 @@ class ChatEngine:
 
         self.generator = GeminiGenerator()
 
-    def ask(self, question):
-        
+    def ask(self, question, history=None):
+        """
+        Runs the full RAG pipeline for a question.
+
+        Args:
+            question: The user's question.
+            history: Optional list of previous message dicts
+                     [{"role": "user"/"assistant", "content": "..."}].
+
+        Returns:
+            tuple: (answer_text, retrieved_chunks)
+        """
+
         if not question.strip():
             raise ValueError(
                 "Question cannot be empty."
             )
-
 
         chunks = self.retriever.retrieve(question)
 
@@ -30,7 +40,8 @@ class ChatEngine:
 
         answer = self.generator.generate(
             question,
-            context
+            context,
+            history=history
         )
 
-        return answer
+        return answer, chunks

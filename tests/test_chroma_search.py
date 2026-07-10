@@ -1,27 +1,29 @@
 from vector_db.vector_db_manager import VectorDBManager
 from embeddings.embedding_manager import EmbeddingManager
 
-# Initialize managers
-vector_db = VectorDBManager().get_vector_db()
-embedder = EmbeddingManager().get_embedder()
+if __name__ == "__main__":
 
-# User query
-query = "How do users login?"
+    # Initialize managers
+    vector_db = VectorDBManager().get_vector_db()
+    embedder = EmbeddingManager().get_embedder()
 
-# Convert query to embedding
-query_embedding = embedder.embed_text(query)
+    # User query
+    query = "How do users login?"
 
-# Search in ChromaDB
-results = vector_db.search(query_embedding)
+    # Convert query to embedding
+    query_embedding = embedder.embed_text(query)
 
-# Pretty print the results
-for doc, metadata, distance in zip(
-    results["documents"][0],
-    results["metadatas"][0],
-    results["distances"][0]
-):
-    print("=" * 50)
-    print(f"Score: {distance:.4f}")
-    print(f"File: {metadata['path']}")
-    print(f"Type: {metadata.get('type')}")
-    print(doc)
+    # Search in ChromaDB
+    results = vector_db.search(query_embedding)
+
+    # Pretty print the results
+    for doc, metadata, distance in zip(
+        results["documents"][0],
+        results["metadatas"][0],
+        results["distances"][0]
+    ):
+        print("=" * 50)
+        print(f"Score: {distance:.4f}")
+        print(f"File: {metadata['path']}")
+        print(f"Type: {metadata.get('type')}")
+        print(doc)

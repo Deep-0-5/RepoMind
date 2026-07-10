@@ -1,0 +1,610 @@
+/* ===================================================================
+   RepoMind — Design System
+   Injected dynamically by ui/theme.py, which prepends a
+   variable block (light or dark) before this file's contents.
+=================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+code, pre, .stCodeBlock, [data-testid="stCodeBlock"] {
+    font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* ---------- App shell ---------- */
+
+[data-testid="stAppViewContainer"] {
+    background-color: var(--rm-bg) !important;
+    color: var(--rm-text) !important;
+}
+
+[data-testid="stHeader"] {
+    background-color: transparent !important;
+}
+
+[data-testid="stSidebar"] {
+    background-color: var(--rm-sidebar-bg) !important;
+    border-right: 1px solid var(--rm-border);
+}
+
+[data-testid="stSidebar"] * {
+    color: var(--rm-text) !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+    gap: 0.35rem;
+}
+
+.block-container {
+    padding-top: 2.25rem !important;
+    max-width: 1080px;
+}
+
+/* ---------- Typography ---------- */
+
+h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+    color: var(--rm-text) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em;
+}
+
+.stMarkdown h3 {
+    font-size: 1.05rem !important;
+    margin-bottom: 0.1rem !important;
+}
+
+p, span, label, .stMarkdown, .stCaption {
+    color: var(--rm-text-secondary) !important;
+}
+
+hr, [data-testid="stDivider"] {
+    border-color: var(--rm-border) !important;
+    margin: 0.9rem 0 !important;
+}
+
+/* Subtle, low-emphasis divider (sidebar sections) */
+.rm-divider-subtle {
+    border: none;
+    border-top: 1px solid var(--rm-border);
+    margin: 0.85rem 0;
+}
+
+/* Small uppercase section labels, à la Linear / Notion sidebars */
+.rm-section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rm-text-tertiary) !important;
+    margin: 0.2rem 0 0.35rem 0.15rem;
+}
+
+/* ---------- Brand / wordmark ---------- */
+
+.rm-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.1rem 0 0.6rem 0.05rem;
+}
+
+.rm-brand-mark {
+    width: 1.55rem;
+    height: 1.55rem;
+    border-radius: 7px;
+    background: var(--rm-accent);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.rm-brand-name {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--rm-text) !important;
+    letter-spacing: -0.01em;
+}
+
+/* ---------- Top bar ---------- */
+
+.rm-topbar-title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+}
+
+.rm-topbar-title .rm-app-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--rm-text) !important;
+    letter-spacing: -0.02em;
+}
+
+.rm-topbar-subtitle {
+    color: var(--rm-text-tertiary) !important;
+    font-size: 0.85rem;
+    margin-top: 0.1rem;
+}
+
+/* ---------- Buttons ---------- */
+
+.stButton > button {
+    background-color: var(--rm-surface) !important;
+    color: var(--rm-text) !important;
+    border: 1px solid var(--rm-border) !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    font-size: 0.88rem !important;
+    padding: 0.45rem 0.9rem !important;
+    transition: all 0.12s ease-in-out;
+    box-shadow: none !important;
+}
+
+.stButton > button:hover {
+    border-color: var(--rm-border-strong) !important;
+    background-color: var(--rm-surface-hover) !important;
+    color: var(--rm-text) !important;
+}
+
+.stButton > button:active {
+    transform: translateY(0.5px);
+}
+
+.stButton > button:disabled {
+    opacity: 0.4 !important;
+}
+
+/* Primary action buttons (New chat / Index / Clone) get the solid accent look */
+.rm-primary-btn .stButton > button {
+    background-color: var(--rm-accent) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--rm-accent) !important;
+}
+
+.rm-primary-btn .stButton > button:hover {
+    background-color: var(--rm-accent-hover) !important;
+    border-color: var(--rm-accent-hover) !important;
+    color: #ffffff !important;
+}
+
+/* Segmented tab control (Local / GitHub, etc.) */
+.rm-tab .stButton > button {
+    background-color: transparent !important;
+    border: 1px solid transparent !important;
+    color: var(--rm-text-secondary) !important;
+    border-radius: 7px !important;
+}
+
+.rm-tab .stButton > button:hover {
+    color: var(--rm-text) !important;
+    background-color: var(--rm-surface-hover) !important;
+}
+
+.rm-tab-active .stButton > button {
+    background-color: var(--rm-bg) !important;
+    border: 1px solid var(--rm-border) !important;
+    color: var(--rm-text) !important;
+    font-weight: 600 !important;
+    box-shadow: var(--rm-shadow) !important;
+}
+
+.rm-tab-group {
+    display: flex;
+    gap: 0.2rem;
+    background-color: var(--rm-surface);
+    border: 1px solid var(--rm-border);
+    border-radius: 9px;
+    padding: 0.2rem;
+    margin-bottom: 0.6rem;
+}
+
+/* ---------- Inputs ---------- */
+
+.stTextInput input, .stTextArea textarea {
+    background-color: var(--rm-bg) !important;
+    color: var(--rm-text) !important;
+    border: 1px solid var(--rm-border) !important;
+    border-radius: 8px !important;
+    font-size: 0.88rem !important;
+}
+
+.stTextInput input:focus, .stTextArea textarea:focus {
+    border-color: var(--rm-accent) !important;
+    box-shadow: 0 0 0 3px var(--rm-accent-soft) !important;
+}
+
+.stTextInput input::placeholder {
+    color: var(--rm-text-tertiary) !important;
+}
+
+.stRadio label, .stRadio div {
+    color: var(--rm-text) !important;
+}
+
+/* ---------- Alerts (info / success / warning / error) ---------- */
+
+[data-testid="stAlert"] {
+    background-color: var(--rm-surface) !important;
+    border: 1px solid var(--rm-border) !important;
+    border-radius: 10px !important;
+    color: var(--rm-text) !important;
+    font-size: 0.88rem !important;
+}
+
+/* ---------- Metrics ---------- */
+
+[data-testid="stMetric"] {
+    background-color: var(--rm-surface);
+    border: 1px solid var(--rm-border);
+    border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+}
+
+[data-testid="stMetricLabel"] {
+    color: var(--rm-text-tertiary) !important;
+    font-size: 0.72rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600 !important;
+}
+
+[data-testid="stMetricValue"] {
+    color: var(--rm-text) !important;
+    font-weight: 700 !important;
+    font-size: 1.4rem !important;
+}
+
+/* ---------- Status pill ---------- */
+
+.rm-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--rm-text-secondary) !important;
+}
+
+.rm-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.rm-status-dot--green { background-color: var(--rm-success); }
+.rm-status-dot--yellow { background-color: #d97706; }
+.rm-status-dot--red { background-color: var(--rm-error); }
+.rm-status-dot--gray { background-color: var(--rm-text-tertiary); }
+
+/* ---------- Neutral badge (top bar chips) ---------- */
+
+.rm-badge {
+    display: inline-block;
+    background-color: var(--rm-surface);
+    border: 1px solid var(--rm-border);
+    color: var(--rm-text-secondary) !important;
+    border-radius: 999px;
+    padding: 0.22rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.rm-badge--accent {
+    background-color: var(--rm-accent-soft);
+    border-color: transparent;
+    color: var(--rm-accent) !important;
+    font-weight: 600;
+}
+
+.rm-theme-toggle .stButton > button {
+    border-radius: 8px !important;
+    width: 2.3rem !important;
+    padding: 0.4rem !important;
+}
+
+/* ---------- Repository card ---------- */
+
+.rm-repo-card {
+    background-color: var(--rm-bg);
+    border: 1px solid var(--rm-border);
+    border-radius: 10px;
+    padding: 0.75rem 0.85rem;
+    box-shadow: var(--rm-shadow);
+}
+
+.rm-repo-card-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--rm-text) !important;
+    margin-bottom: 0.15rem;
+    word-break: break-word;
+}
+
+.rm-repo-card-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--rm-text-tertiary) !important;
+    margin-bottom: 0.5rem;
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+.rm-repo-card-empty {
+    font-size: 0.82rem;
+    color: var(--rm-text-tertiary) !important;
+    padding: 0.4rem 0.1rem;
+}
+
+/* ---------- Sidebar chat history list ---------- */
+
+.rm-history-item .stButton > button {
+    text-align: left !important;
+    justify-content: flex-start !important;
+    background-color: transparent !important;
+    border: 1px solid transparent !important;
+    color: var(--rm-text-secondary) !important;
+    font-size: 0.84rem !important;
+    font-weight: 400 !important;
+    padding: 0.4rem 0.55rem !important;
+    border-radius: 7px !important;
+}
+
+.rm-history-item .stButton > button:hover {
+    background-color: var(--rm-surface-hover) !important;
+    color: var(--rm-text) !important;
+}
+
+.rm-history-item-active .stButton > button {
+    background-color: var(--rm-accent-soft) !important;
+    color: var(--rm-accent) !important;
+    font-weight: 600 !important;
+    border-color: transparent !important;
+}
+
+/* ---------- Empty state ---------- */
+
+.rm-empty-state {
+    text-align: center;
+    padding: 2.2rem 1.5rem;
+    color: var(--rm-text-secondary) !important;
+}
+
+.rm-empty-state-title {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--rm-text) !important;
+    margin-bottom: 0.45rem;
+}
+
+.rm-empty-state-body {
+    font-size: 0.85rem;
+    color: var(--rm-text-tertiary) !important;
+    line-height: 1.75;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+/* ---------- Source file list ---------- */
+
+.rm-source-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--rm-border);
+    border-radius: 8px;
+    background-color: var(--rm-surface);
+    margin-bottom: 0.4rem;
+}
+
+.rm-source-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--rm-text) !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rm-source-score {
+    font-size: 0.72rem;
+    color: var(--rm-text-tertiary) !important;
+    flex-shrink: 0;
+    margin-left: 0.75rem;
+}
+
+.rm-source-empty {
+    font-size: 0.84rem;
+    color: var(--rm-text-tertiary) !important;
+}
+
+/* ---------- Chat turns ----------
+   Custom-built (not st.chat_message) so we get real control over
+   layout instead of Streamlit's fixed-height avatar rows, which is
+   what made short questions render as oversized boxes. */
+
+.rm-chat-turn {
+    margin-bottom: 1.4rem;
+}
+
+.rm-chat-turn:last-child {
+    margin-bottom: 0.2rem;
+}
+
+/* User: compact, right-aligned bubble */
+
+.rm-chat-user-row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.rm-chat-user-bubble {
+    background-color: var(--rm-accent-soft);
+    border-radius: 16px 16px 4px 16px;
+    padding: 0.55rem 0.95rem;
+    max-width: 78%;
+}
+
+.rm-chat-user-bubble .stMarkdown,
+.rm-chat-user-bubble p {
+    color: var(--rm-text) !important;
+    font-size: 0.89rem !important;
+    line-height: 1.55 !important;
+    margin: 0 !important;
+}
+
+/* Assistant: plain, left-aligned, no bubble — reads like a real
+   AI answer rather than a boxed chat log entry */
+
+.rm-chat-assistant-row {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.rm-chat-assistant-wrap {
+    width: 100%;
+    max-width: 94%;
+}
+
+.rm-chat-role-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--rm-text-tertiary) !important;
+    margin-bottom: 0.4rem;
+}
+
+.rm-chat-role-mark {
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 5px;
+    background-color: var(--rm-accent);
+    color: #ffffff !important;
+    font-size: 0.6rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.rm-chat-assistant-body .stMarkdown,
+.rm-chat-assistant-body p {
+    color: var(--rm-text) !important;
+    font-size: 0.9rem !important;
+    line-height: 1.75 !important;
+    margin: 0 0 0.6rem 0 !important;
+}
+
+.rm-chat-assistant-body p:last-child {
+    margin-bottom: 0 !important;
+}
+
+.rm-chat-assistant-body ol,
+.rm-chat-assistant-body ul {
+    padding-left: 1.25rem;
+    margin: 0.3rem 0 0.7rem 0 !important;
+}
+
+.rm-chat-assistant-body li {
+    color: var(--rm-text) !important;
+    font-size: 0.9rem !important;
+    line-height: 1.75 !important;
+    margin-bottom: 0.15rem;
+}
+
+.rm-chat-assistant-body strong {
+    color: var(--rm-text) !important;
+    font-weight: 600 !important;
+}
+
+/* Inline code / file-path spans, wherever markdown renders them —
+   overrides Streamlit's default syntax-highlight colors, which is
+   what produced the mismatched yellow/green chips in dark mode */
+
+.stMarkdown code:not(pre code) {
+    background-color: var(--rm-surface) !important;
+    border: 1px solid var(--rm-border) !important;
+    color: var(--rm-accent) !important;
+    padding: 0.1rem 0.4rem !important;
+    border-radius: 5px !important;
+    font-size: 0.82em !important;
+    font-weight: 500 !important;
+}
+
+.rm-chat-user-bubble code:not(pre code) {
+    background-color: var(--rm-bg) !important;
+}
+
+/* Thinking / spinner */
+
+[data-testid="stSpinner"] {
+    color: var(--rm-text-secondary) !important;
+    font-size: 0.85rem !important;
+}
+
+/* ---------- Bordered containers (chat window) ---------- */
+
+[data-testid="stVerticalBlockBorderWrapper"] {
+    border-color: var(--rm-border) !important;
+    border-radius: 12px !important;
+    background-color: var(--rm-bg) !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"] > div > [data-testid="stVerticalBlock"] {
+    padding: 0.4rem 0.5rem;
+}
+
+/* ---------- Pinned bottom chat input ---------- */
+
+[data-testid="stChatInput"] {
+    background-color: var(--rm-bg) !important;
+}
+
+[data-testid="stChatInput"] textarea {
+    background-color: var(--rm-surface) !important;
+    color: var(--rm-text) !important;
+    border-radius: 999px !important;
+    border: 1px solid var(--rm-border) !important;
+    font-size: 0.88rem !important;
+}
+
+[data-testid="stChatInput"] textarea:focus {
+    border-color: var(--rm-accent) !important;
+    box-shadow: 0 0 0 3px var(--rm-accent-soft) !important;
+}
+
+[data-testid="stBottomBlockContainer"] {
+    background-color: var(--rm-bg) !important;
+    border-top: 1px solid var(--rm-border);
+}
+
+[data-testid="stChatInputSubmitButton"] {
+    background-color: var(--rm-accent) !important;
+    border-radius: 999px !important;
+}
+
+[data-testid="stChatInputSubmitButton"]:hover {
+    background-color: var(--rm-accent-hover) !important;
+}
+
+/* ---------- Footer ---------- */
+
+.rm-footer {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--rm-text-tertiary) !important;
+    padding: 0.4rem 0 0.2rem 0;
+}

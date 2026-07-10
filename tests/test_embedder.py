@@ -1,16 +1,18 @@
 from embeddings.embedding_manager import EmbeddingManager
 
-manager = EmbeddingManager()
+if __name__ == "__main__":
 
-embedder = manager.get_embedder()
+    manager = EmbeddingManager()
 
-code = """
-def login():
-    print("Hello")
-"""
+    embedder = manager.get_embedder()
 
-embedding = embedder.embed_text(code)
+    code = """
+    def login():
+        print("Hello")
+    """
 
-print(type(embedding))
-print(len(embedding))
-print(embedding[:10])
+    embedding = embedder.embed_text(code)
+
+    print(type(embedding))
+    print(len(embedding))
+    print(embedding[:10])
