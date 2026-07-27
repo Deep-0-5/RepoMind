@@ -44,6 +44,11 @@ class RepositoryCloner:
 
         destination = Path("data") / "repositories" / repo_name
 
+        destination.parent.mkdir(
+            parents=True,
+            exist_ok=True
+        )
+
         if destination.exists():
             logger.info("Repository already exists.")
             return True

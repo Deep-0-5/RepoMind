@@ -1,4 +1,5 @@
 import chromadb
+import os
 from typing import Optional
 from google import genai
 from sentence_transformers import SentenceTransformer
@@ -76,6 +77,9 @@ class ResourceManager:
             logger.info(
                 "Initializing ChromaDB Client..."
             )
+
+            # Create the directory if it doesn't exist
+            os.makedirs(CHROMA_DB_PATH, exist_ok=True)
 
             cls._chroma_client = chromadb.PersistentClient(
                 path=CHROMA_DB_PATH
